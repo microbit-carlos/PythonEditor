@@ -64,7 +64,7 @@ function pythonEditor(id) {
 
     // Generates a hex file containing the user's Python from the firmware.
     editor.getHexFile = function(firmware) {
-        return upyhex.injectPyStrIntoIntelHex(firmware, this.getCode());
+        return MicropythonFs.appendScriptToIntelHex(firmware, this.getCode());
     };
 
     // Given a password and some plaintext, will return an encrypted version.
@@ -368,7 +368,7 @@ function web_editor(config) {
                             setName(f.name.replace('.hex', ''));
                             setDescription(config.translate.drop.hex);
                             reader.onload = function(e) {
-                                var code = upyhex.extractPyStrFromIntelHex(
+                                var code = MicropythonFs.getScriptFromIntelHex(
                                         e.target.result);
                                 if(code.length < 8192) {
                                     EDITOR.setCode(code);
@@ -545,7 +545,7 @@ function web_editor(config) {
             setName(file.name.replace('.hex', ''));
             setDescription(config.translate.drop.hex);
             reader.onload = function(e) {
-                var code = upyhex.extractPyStrFromIntelHex(e.target.result);
+                var code = MicropythonFs.getScriptFromIntelHex(e.target.result);
                 if (code.length < 8192) {
                     EDITOR.setCode(code);
                 }

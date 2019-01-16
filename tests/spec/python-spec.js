@@ -149,14 +149,14 @@ describe("An editor for MicroPython on the BBC micro:bit:", function() {
             var hex_fail = function() {
                 // Keep in mind the 4 Bytes header
                 var codeLen = (8 * 1024) - 4 + 1;
-                var result = upyhex.injectPyStrIntoIntelHex(template_hex, new Array(codeLen + 1).join('a'));
+                var result = MicropythonFs.appendScriptToIntelHex(template_hex, new Array(codeLen + 1).join('a'));
             };
             expect(hex_fail).toThrowError(RangeError, 'Too long');
         });
 
         it("The editor is fine if the Python script is 8k in length.", function() {
             var codeLen = (8 * 1024) - 4;
-            var hexified = upyhex.injectPyStrIntoIntelHex(template_hex, new Array(codeLen + 1).join('a'));
+            var hexified = MicropythonFs.appendScriptToIntelHex(template_hex, new Array(codeLen + 1).join('a'));
             expect(hexified).not.toBe(null);
         });
 
@@ -188,7 +188,7 @@ describe("An editor for MicroPython on the BBC micro:bit:", function() {
                 ":10E000004D501700646973706C61792E7363726F81\n" +
                 ":10E010006C6C282248656C6C6F222900000000009F\n" +
                 ":00000001FF\n";
-            var result = upyhex.extractPyStrFromIntelHex(raw_hex);
+            var result = MicropythonFs.getScriptFromIntelHex(raw_hex);
             var expected = 'display.scroll("Hello")';
             expect(result).toEqual(expected);
         });
@@ -203,7 +203,7 @@ describe("An editor for MicroPython on the BBC micro:bit:", function() {
                 ":10E010006C6C282248656C6C6F222900000000009F\n" +
                 ":04000005000153EDB6\n" +
                 ":00000001FF";
-            var result = upyhex.extractPyStrFromIntelHex(raw_hex);
+            var result = MicropythonFs.getScriptFromIntelHex(raw_hex);
             var expected = 'display.scroll("Hello")';
             expect(result).toEqual(expected);
         });
@@ -214,7 +214,7 @@ describe("An editor for MicroPython on the BBC micro:bit:", function() {
                 ":04B2D0000D0100006C\n" +
                 ":04000005000153EDB6\n" +
                 ":00000001FF";
-            var result = upyhex.extractPyStrFromIntelHex(raw_hex);
+            var result = MicropythonFs.getScriptFromIntelHex(raw_hex);
             var expected = '';
             expect(result).toEqual(expected);
         });
